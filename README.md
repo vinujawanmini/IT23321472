@@ -71,7 +71,8 @@ cd IT23321472
 Run the following commands inside the project directory:
 
 ```bash
-npm init playwright@latest
+npm install
+npx playwright install
 ```
 
 ---
@@ -101,7 +102,7 @@ npx playwright test tests/assignmentNeg.spec.js
 ### ▶️ Run Only UI Test Scenario
 
 ```bash
-npx playwright test tests/assignmentPos_UI.spec.js
+npx playwright test tests/assignmentUI.spec.js
 ```
 
 ---
