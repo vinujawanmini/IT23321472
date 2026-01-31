@@ -1,148 +1,153 @@
-// tests/assignment.spec.js
+ // tests/assignment1.spec.js
 const { test, expect } = require('@playwright/test');
 
-test.describe('IT3040 Assignment 1 - Final Verified Suite', () => {
+test.describe('IT3040 Assignment 1 - Positive Test Suite', () => {
 
+  // වෙබ් අඩවියට පිවිසීම
   test.beforeEach(async ({ page }) => {
     await page.goto('https://www.swifttranslator.com/');
   });
 
-  // --- Helper Function (Robust) ---
-  // Forces translation verification
+  // --- Helper Function ---
+  // මෙය භාවිතා කරන්නේ පරිවර්තනය සිදුවන තෙක් රැඳී සිටීමට සහ ප්‍රතිඵලය පරීක්ෂා කිරීමටයි.
   async function checkOutput(page, expectedText) {
-    // Press Space to ensure the last word triggers the conversion
+    // Space බොත්තම ඔබා පරිවර්තනය Trigger කරයි
     await page.locator('#singlish').press('Space');
     
-    // Wait for the output to appear in the result box
     const outputLocator = page.locator('#sinhala');
-    await expect(outputLocator).not.toBeEmpty({ timeout: 10000 });
     
-    // Check if the expected text exists within the output
+    // ප්‍රතිඵලය ලැබෙන තෙක් තත්පර කිහිපයක් රැඳී සිටී
+    await expect(outputLocator).not.toBeEmpty({ timeout: 30000 });
+    
+    // බලාපොරොත්තු වන වචන ප්‍රතිඵලයේ ඇත්දැයි පරීක්ෂා කරයි
     await expect(outputLocator).toContainText(expectedText);
   }
 
   // ==========================================
-  // 1. POSITIVE FUNCTIONAL TESTS (Your 30 Sentences)
+  // POSITIVE TEST CASES (ඔබගේ වාක්‍ය 30)
   // ==========================================
 
   test('Pos_Fun_0001: Simple Sentence', async ({ page }) => {
-    await page.locator('#singlish').fill('nangi potha kiyavanavaa.');
-    await checkOutput(page, 'නන්ගි පොත කියවනවා.');
+    await page.locator('#singlish').fill('malli potha kiyavanavaa.');
+    await checkOutput(page, 'මල්ලි පොත කියවනවා.');
   });
 
   test('Pos_Fun_0002: Compound Sentence', async ({ page }) => {
-    await page.locator('#singlish').fill('ammayi thaaththayi kadee yanavaa vageema baduth gannavaa.');
-    await checkOutput(page, 'අම්මයි තාත්තයි කඩේ යනවා වගේම බඩුත් ගන්නවා.');
+    await page.locator('#singlish').fill('akkayi malliyi kadee yanavaa vageema baduth gannavaa.');
+    await checkOutput(page, 'අක්කයි මල්ලියි කඩේ යනවා වගේම බඩුත් ගන්නවා.');
   });
 
   test('Pos_Fun_0003: Complex Sentence', async ({ page }) => {
-    await page.locator('#singlish').fill('oyaa heta enakan mama methana balan innavaa.');
-    await checkOutput(page, 'ඔයා හෙට එනකන් මම මෙතන බලන් ඉන්නවා.');
+    await page.locator('#singlish').fill('malli heta enakan akkaa methana balan innavaa.');
+    await checkOutput(page, 'මල්ලි හෙට එනකන් අක්කා මෙතන බලන් ඉන්නවා.');
   });
 
-  test('Pos_Fun_0004: Question Form', async ({ page }) => {
-    await page.locator('#singlish').fill('api adha raeeta monavadha uyanne?');
-    await checkOutput(page, 'අපි අද රෑට මොනවද උයන්නෙ?');
+  test('Pos_Fun_0004: Interrogative (Question)', async ({ page }) => {
+    await page.locator('#singlish').fill('api adha raeeta monavadha kanne?');
+    await checkOutput(page, 'අපි අද රෑට මොනවද කන්නෙ?');
   });
 
   test('Pos_Fun_0005: Polite Command', async ({ page }) => {
-    await page.locator('#singlish').fill('karunaakaralaa dhorata thattu karanna epaa.');
-    await checkOutput(page, 'කරුනාකරලා දොරට තට්ටු කරන්න එපා.');
+    await page.locator('#singlish').fill('karunaakaralaa oluvata thattu karanna epaa.');
+    await checkOutput(page, 'කරුනාකරලා ඔලුවට තට්ටු කරන්න එපා.');
   });
 
   test('Pos_Fun_0006: Negation', async ({ page }) => {
-    await page.locator('#singlish').fill('mata kaeema genna mathaka naee.');
-    await checkOutput(page, 'මට කෑම ගෙන්න මතක නෑ.');
+    await page.locator('#singlish').fill('mata potha geenna mathaka naee.');
+    await checkOutput(page, 'මට පොත ගේන්න මතක නෑ.');
   });
 
-  test('Pos_Fun_0007: Past Tense/Place', async ({ page }) => {
-    await page.locator('#singlish').fill('api giya maase gaallee giyaa.');
-    await checkOutput(page, 'අපි ගිය මාසෙ ගාල්ලේ ගියා.');
+  test('Pos_Fun_0007: Past Tense', async ({ page }) => {
+    await page.locator('#singlish').fill('api giya maase maathara giyaa.');
+    await checkOutput(page, 'අපි ගිය මාසෙ මාතර ගියා.');
   });
 
   test('Pos_Fun_0008: Future Tense', async ({ page }) => {
-    await page.locator('#singlish').fill('ayiyaa heta pansal yaavi.');
-    await checkOutput(page, 'අයියා හෙට පන්සල් යාවි.');
+    await page.locator('#singlish').fill('akkaa heta pansal yaavi.');
+    await checkOutput(page, 'අක්කා හෙට පන්සල් යාවි.');
   });
 
   test('Pos_Fun_0009: Plural Form', async ({ page }) => {
-    await page.locator('#singlish').fill('sisun iskolee sellam karanavaa.');
-    await checkOutput(page, 'සිසුන් ඉස්කොලේ සෙල්ලම් කරනවා.');
+    await page.locator('#singlish').fill('sisun pittaniyee sellam karanavaa.');
+    await checkOutput(page, 'සිසුන් පිට්ටනියේ සෙල්ලම් කරනවා.');
   });
 
   test('Pos_Fun_0010: Conditional Request', async ({ page }) => {
-    await page.locator('#singlish').fill('puluvannam mata thaeegga dhenna.');
-    await checkOutput(page, 'පුලුවන්නම් මට තෑග්ග දෙන්න.');
+    await page.locator('#singlish').fill('puluvannam mata potha dhenna.');
+    await checkOutput(page, 'පුලුවන්නම් මට පොත දෙන්න.');
   });
 
-  test('Pos_Fun_0011: Mixed English Object', async ({ page }) => {
-    await page.locator('#singlish').fill('mama aluth laptop ekak gaththaa.');
-    await checkOutput(page, 'මම අලුත් laptop එකක් ගත්තා.');
+  test('Pos_Fun_0011: Mixed English (Object)', async ({ page }) => {
+    await page.locator('#singlish').fill('mama aluth bus ekak gaththaa.');
+    await checkOutput(page, 'මම අලුත් bus එකක් ගත්තා.');
   });
 
-  test('Pos_Fun_0012: Mixed Brand Name', async ({ page }) => {
-    await page.locator('#singlish').fill('mama Facebook ekee post ekak dhaemmaa.');
-    await checkOutput(page, 'මම Facebook එකේ post එකක් දැම්මා.');
+  test('Pos_Fun_0012: Mixed English (Brand)', async ({ page }) => {
+    await page.locator('#singlish').fill('eyaa Facebook ekee post ekak dhaemmaa.');
+    await checkOutput(page, 'එයා Facebook එකේ post එකක් දැම්මා.');
   });
 
-  test('Pos_Fun_0013: Currency', async ({ page }) => {
-    await page.locator('#singlish').fill('meeke mila Rs. 2500 yi.');
-    await checkOutput(page, 'මේකෙ මිල Rs. 2500 යි.');
+  test('Pos_Fun_0013: Currency Format', async ({ page }) => {
+    await page.locator('#singlish').fill('car ekee mila Rs. 5500.');
+    await checkOutput(page, 'car එකේ මිල Rs. 5500.');
   });
 
   test('Pos_Fun_0014: Time Format', async ({ page }) => {
-    await page.locator('#singlish').fill('api 8.00 AM ta hamuwemu.');
-    await checkOutput(page, 'අපි 8.00 AM ට හමුවෙමු.');
+    await page.locator('#singlish').fill('api 10.00 AM ta hamuvemu.');
+    await checkOutput(page, 'අපි 10.00 AM ට හමුවෙමු.');
   });
 
   test('Pos_Fun_0015: Date Format', async ({ page }) => {
-    await page.locator('#singlish').fill('upan dhinaya 1999-05-12 venidhaa.');
-    await checkOutput(page, 'උපන් දිනය 1999-05-12 වෙනිදා.');
+    await page.locator('#singlish').fill('upan dhinaya 1996-05-23 venidhaa.');
+    await checkOutput(page, 'උපන් දිනය 1996-05-23 වෙනිදා.');
   });
 
-  test('Pos_Fun_0016: Formatting/Line Breaks', async ({ page }) => {
-    await page.locator('#singlish').fill('gamata yanna \n\n parissamen.');
-    // We check if both parts exist in the output (ignoring exact newline visual rendering)
-    await checkOutput(page, 'ගමට යන්න');
+  test('Pos_Fun_0016: Formatting (Spaces/Line Breaks)', async ({ page }) => {
+    // මෙම වාක්‍යයේ ඇති හිස්තැන් (Spaces) එලෙසම තබා ඇත
+    const multiLineInput = 'parissamen        pansalata                                                                        yanna.';
+    await page.locator('#singlish').fill(multiLineInput);
+    // වචන වෙන් වෙන්ව පරිවර්තනය වී ඇත්දැයි බලයි
     await checkOutput(page, 'පරිස්සමෙන්');
+    await checkOutput(page, 'පන්සලට');
   });
 
-  test('Pos_Fun_0017: Slang', async ({ page }) => {
-    await page.locator('#singlish').fill('adoo patta kathaava eka machan.');
-    await checkOutput(page, 'අඩෝ පට්ට කතාව එක මචන්.');
+  test('Pos_Fun_0017: Slang Expression', async ({ page }) => {
+    await page.locator('#singlish').fill('adoo maara paadama eeka machan.');
+    await checkOutput(page, 'අඩෝ මාර පාඩම ඒක මචන්.');
   });
 
   test('Pos_Fun_0018: Long Paragraph', async ({ page }) => {
-    const longText = 'dubai vala ithihaasaya bohomath puraanaya. sapumal kumaru paeminiimata pera sitama helayo methana jiivath unaa. thissa rajuthumaa gaena thiyena kathaa vishvaasa karanna puluvan. dhaen kaale thiyena technology eka ekka baladhdhi rajayata godak dheeval hoyaaganna puluvan velaa thiyenavaa. Mee rata lassanayi vagema minisun hari  hodhayi. Api haemooma ekathu velaa rata hadhanna oona.';
+    const longText = 'dubai vala ithihaasaya bohomath puraanaya. sapumal kumaru paeminiimata pera sitama helayo methana jiivath unaa. thissa rajuthumaa gaena thiyena kathaa vishvaasa karanna puluvan. dhaen kaale thiyena technology eka ekka baladhdhi rajayata godak dheeval hoyaaganna puluvan velaa thiyenavaa. Mee rata lassanayi vagema minisun hari naeNa guNavath . Api haemooma ekathu velaa rata hadhanna oona.';
     await page.locator('#singlish').fill(longText);
-    // Verify start and end to ensure full conversion
+    
+    // ඡේදයේ මුල සහ අග පරීක්ෂා කරයි
     await checkOutput(page, 'dubai වල ඉතිහාසය බොහොමත් පුරානය.');
     await checkOutput(page, 'රට හදන්න ඕන.');
   });
 
   test('Pos_Fun_0019: Feeling/State', async ({ page }) => {
-    await page.locator('#singlish').fill('mata bada giniyi.');
-    await checkOutput(page, 'මට බඩ ගිනියි.');
+    await page.locator('#singlish').fill('mallita badaginiyi.');
+    await checkOutput(page, 'මල්ලිට බඩගිනියි.');
   });
 
   test('Pos_Fun_0020: Group Subject', async ({ page }) => {
-    await page.locator('#singlish').fill('api haemooma ekata ekathu velaa vaeda.');
-    await checkOutput(page, 'අපි හැමෝම එකට එකතු වෙලා වැඩ.');
+    await page.locator('#singlish').fill('api haemooma heta vaeda.');
+    await checkOutput(page, 'අපි හැමෝම හෙට වැඩ.');
   });
 
   test('Pos_Fun_0021: English Abbreviation', async ({ page }) => {
-    await page.locator('#singlish').fill('eyaa oyaage ID eka evanna kivvaa.');
-    await checkOutput(page, 'එයා ඔයාගෙ ID එක එවන්න කිව්වා.');
+    await page.locator('#singlish').fill('eyaata oyaage ID eka oona kivvaa.');
+    await checkOutput(page, 'එයාට ඔයාගෙ ID එක ඕන කිව්වා.');
   });
 
-  test('Pos_Fun_0022: Question Emphasis', async ({ page }) => {
-    await page.locator('#singlish').fill('oyaa mokadha karanne? kiyanna!');
-    await checkOutput(page, 'ඔයා මොකද කරන්නේ? කියන්න!');
+  test('Pos_Fun_0022: Question with Emphasis', async ({ page }) => {
+    await page.locator('#singlish').fill('oyaa bath kanavadha? kiyanna!');
+    await checkOutput(page, 'ඔයා බත් කනවද? කියන්න!');
   });
 
   test('Pos_Fun_0023: Repeated Words', async ({ page }) => {
-    await page.locator('#singlish').fill('himin himin yanna.');
-    await checkOutput(page, 'හිමින් හිමින් යන්න.');
+    await page.locator('#singlish').fill('ikmanata ikmanata yanna.');
+    await checkOutput(page, 'ඉක්මනට ඉක්මනට යන්න.');
   });
 
   test('Pos_Fun_0024: Greeting', async ({ page }) => {
@@ -150,36 +155,34 @@ test.describe('IT3040 Assignment 1 - Final Verified Suite', () => {
     await checkOutput(page, 'සුබ රාත්‍රියක්!');
   });
 
-  test('Pos_Fun_0025: Confirmation Response', async ({ page }) => {
-    await page.locator('#singlish').fill('Ov, eekanam vaeradhiyi.');
-    await checkOutput(page, 'ඔව්, ඒකනම් වැරදියි.');
+  test('Pos_Fun_0025: Confirmation', async ({ page }) => {
+    await page.locator('#singlish').fill('Ov, eeka vaeradhiyi.');
+    await checkOutput(page, 'ඔව්, ඒක වැරදියි.');
   });
 
   test('Pos_Fun_0026: Idiomatic Question', async ({ page }) => {
-    await page.locator('#singlish').fill('eyaa koyi lookedha inne?');
-    await checkOutput(page, 'එයා කොයි ලෝකෙද ඉන්නේ?');
+    await page.locator('#singlish').fill('oyaa koyi lookedha inne?');
+    await checkOutput(page, 'ඔයා කොයි ලෝකෙද ඉන්නේ?');
   });
 
   test('Pos_Fun_0027: Thanks', async ({ page }) => {
-    await page.locator('#singlish').fill('akkaata godaak sthuthiyi.');
-    await checkOutput(page, 'අක්කාට ගොඩාක් ස්තුතියි.');
+    await page.locator('#singlish').fill('oyaata godaak sthuthiyi.');
+    await checkOutput(page, 'ඔයාට ගොඩාක් ස්තුතියි.');
   });
 
   test('Pos_Fun_0028: Future Prediction', async ({ page }) => {
-    await page.locator('#singlish').fill('anidhdhaa vahinavaa.');
-    await checkOutput(page, 'අනිද්දා වහිනවා.');
+    await page.locator('#singlish').fill('anidhdhaa paayanavaa.');
+    await checkOutput(page, 'අනිද්දා පායනවා.');
   });
 
   test('Pos_Fun_0029: Food Suggestion', async ({ page }) => {
-    await page.locator('#singlish').fill('api aappa kamu.');
-    await checkOutput(page, 'අපි ආප්ප කමු.');
+    await page.locator('#singlish').fill('api vadee kamu.');
+    await checkOutput(page, 'අපි වඩේ කමු.');
   });
 
   test('Pos_Fun_0030: Units (Weight)', async ({ page }) => {
-    await page.locator('#singlish').fill('siini 1kg k ganna.');
-    await checkOutput(page, 'සීනි 1kg ක් ගන්න.');
+    await page.locator('#singlish').fill('parippu 5kg ganna.');
+    await checkOutput(page, 'පරිප්පු 5kg ගන්න.');
   });
-
- 
 
 });
