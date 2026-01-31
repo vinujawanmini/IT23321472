@@ -31,7 +31,7 @@ The main objective of this project is to test the **functional accuracy**, **rob
 * URLs and numbers
 * Empty and invalid inputs
 
-### 🎨 UI Test Scenario (1)
+### 🎨 UI Test Scenario (3)
 
 * Real-time Sinhala output update verification
 
